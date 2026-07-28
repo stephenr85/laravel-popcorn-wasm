@@ -1,0 +1,12 @@
+{
+    "name": "hello-javy",
+    "runtime": "javy",
+    "entrypoint": "transform.js",
+    "files": ["transform.js"],
+    "build": "source",
+    "link": "dynamic",
+    "description": "The reference Javy transform (build: source ⇒ compiled-and-cached once). Pure sync compute — no event loop, no fs, no net.",
+    "input": { "type": "object", "properties": { "name": { "type": "string" } } },
+    "output": { "type": "object", "properties": { "greeting": { "type": "string" } } },
+    "requests": { "net": "none", "limits": { "memBytes": 67108864 } }
+}
