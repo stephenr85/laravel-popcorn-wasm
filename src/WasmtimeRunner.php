@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Process;
 use JsonException;
 use Rushing\Popcorn\Contracts\Runner;
 use Rushing\Popcorn\Runner\Build;
+use Rushing\Popcorn\Runner\Concerns\HandlesRunnerIo;
 use Rushing\Popcorn\Runner\Grant;
 use Rushing\Popcorn\Runner\GrantAxis;
 use Rushing\Popcorn\Runner\Manifest;
@@ -27,9 +28,7 @@ use Rushing\Popcorn\Wasm\Support\WasmtimeCommand;
  */
 class WasmtimeRunner implements Runner
 {
-    private const OUTPUT_HARD_CAP_BYTES = 262144; // 256 KiB
-
-    private const STDERR_TAIL_BYTES = 16384; // 16 KiB
+    use HandlesRunnerIo;
 
     private const COMPILE_TIMEOUT_SECONDS = 120;
 
@@ -221,30 +220,5 @@ class WasmtimeRunner implements Runner
             wallMs: $wallMs,
             exitCode: $proc->exitCode(),
         );
-    }
-
-    private function isJsonObject(string $candidate): bool
-    {
-        try {
-            return is_array(json_decode($candidate, true, flags: JSON_THROW_ON_ERROR));
-        } catch (JsonException) {
-            return false;
-        }
-    }
-
-    private function tail(string $value, int $bytes): string
-    {
-        return strlen($value) > $bytes ? substr($value, -$bytes) : $value;
-    }
-
-    private function binaryOnPath(string $binary): bool
-    {
-        if (str_contains($binary, '/')) {
-            return is_executable($binary);
-        }
-
-        $which = @shell_exec('command -v '.escapeshellarg($binary).' 2>/dev/null');
-
-        return is_string($which) && trim($which) !== '';
     }
 }
