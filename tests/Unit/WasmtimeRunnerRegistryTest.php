@@ -79,11 +79,13 @@ it('lets a later registration of the same runtime supersede the shipped one', fu
 
     $runner->register('javy', new FakeSpinRuntime);
 
-    // Superseding APPENDS rather than assigning in place, so `javy` moves to the end of registration
-    // order where the old PHP-array assignment held its slot. Nothing reads this registry in order —
-    // `runtimeFor()` is a PickOne lookup — so the move is observable only through `runtimeIds()`.
+    // Superseding overrides IN PLACE: the new record inherits the displaced one's `position` and is
+    // spliced back into the vacated slot, so `javy` keeps the slot a PHP-array assignment gave it and
+    // `runtimeIds()` is unmoved. Ruled by registry-kernel 62, which reversed the append this
+    // assertion originally recorded — a host swapping one shipped default must not re-sort a list it
+    // never touched.
     expect($runner->runtimeFor('javy'))->toBeInstanceOf(FakeSpinRuntime::class)
-        ->and($runner->runtimeIds())->toBe(['python-wasi', 'javy']);
+        ->and($runner->runtimeIds())->toBe(['javy', 'python-wasi']);
 });
 
 it('builds the shipped runtimes from config set AFTER the container booted them', function () {
