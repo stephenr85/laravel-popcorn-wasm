@@ -1,6 +1,6 @@
 {
     "name": "rushing/laravel-popcorn-wasm",
-    "description": "A wasmtime/WASI sandbox substrate for popcorn Runners — the portable, dev==prod route: an in-VM boundary running for-real on macOS, with Javy (JS→wasm) and CPython-WASI runtimes behind a WasmRuntime seam.",
+    "description": "A wasmtime/WASI sandbox substrate for popcorn Runners \u2014 the portable, dev==prod route: an in-VM boundary running for-real on macOS, with Javy (JS\u2192wasm) and CPython-WASI runtimes behind a WasmRuntime seam.",
     "keywords": [
         "laravel",
         "popcorn",
@@ -32,6 +32,20 @@
         "wikimedia/composer-merge-plugin": "^2.1"
     },
     "repositories": [
+        {
+            "type": "path",
+            "url": "../laravel-popcorn",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "../php-popcorn",
+            "options": {
+                "symlink": true
+            }
+        },
         {
             "type": "git",
             "url": "https://github.com/stephenr85/laravel-popcorn.git"
