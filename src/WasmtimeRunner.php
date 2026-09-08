@@ -12,8 +12,8 @@ use Rushing\Popcorn\Registries\BasicRegistry;
 use Rushing\Popcorn\Registries\Gated;
 use Rushing\Popcorn\Registries\IsRegistry;
 use Rushing\Popcorn\Registries\Key;
-use Rushing\Popcorn\Registries\OnDuplicate;
-use Rushing\Popcorn\Registries\Optionality;
+use Rushing\Popcorn\Registries\OnKeyDuplicate;
+use Rushing\Popcorn\Registries\PopulationRequirement;
 use Rushing\Popcorn\Registries\Registry;
 use Rushing\Popcorn\Registries\RegistryKey;
 use Rushing\Popcorn\Runner\Build;
@@ -41,8 +41,8 @@ use Rushing\Popcorn\Wasm\Support\WasmtimeCommand;
 #[IsRegistry(
     root: 'popcorn.wasm.runtimes',
     entryType: WasmRuntime::class,
-    onDuplicate: OnDuplicate::Supersede,
-    optionality: Optionality::Optional,
+    onKeyDuplicate: OnKeyDuplicate::Supersede,
+    populationRequirement: PopulationRequirement::Optional,
     description: 'guest wasm runtimes for the wasmtime substrate, one per `Manifest.runtime` id. Runtime ids are DISJOINT from bubble\'s — there is no portability fiction, an author picks a runtime and thereby a substrate. A later registration of the same id replaces the shipped one. Version-suffixed runtimes (`javy@3`) resolve on the base segment: `@` is not a legal key character, so a suffix never reaches the keyspace.',
 )]
 class WasmtimeRunner implements Gated, Registry, Runner
